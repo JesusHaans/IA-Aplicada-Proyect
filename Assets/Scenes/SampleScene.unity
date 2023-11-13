@@ -141,9 +141,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sensor: []
-  radio: 35
+  radio: 80
   playerPosition: {fileID: 0}
-  normalSpeed: 10
+  wanderRadius: 5
+  normalSpeed: 80
+  smoothTime: 0.5
 --- !u!54 &173267236
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -458,6 +460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6c267083086f45898144866d1700825, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vida: 100
   normalSpeed: 500
   runningSpeed: 750
   rotationSpeed: 180

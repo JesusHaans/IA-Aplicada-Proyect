@@ -5,6 +5,7 @@ using UnityEngine;
 public class MovePlayer : MonoBehaviour
 {
     private new Rigidbody rigidbody;
+    public int vida = 100;
     public float normalSpeed = 500.0f;  // Velocidad normal de movimiento
     public float runningSpeed = 750.0f; // Velocidad cuando se corre
     public float rotationSpeed = 180.0f; // Velocidad de rotación
