@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovePlayer : MonoBehaviour
+public class movePlayer : MonoBehaviour
 {
     private new Rigidbody rigidbody;
     public int vida = 100;
     public float normalSpeed = 500.0f;  // Velocidad normal de movimiento
     public float runningSpeed = 750.0f; // Velocidad cuando se corre
-    public float rotationSpeed = 180.0f; // Velocidad de rotación
+    public float rotationSpeed = 180.0f; // Velocidad de rotaciï¿½n
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +31,7 @@ public class MovePlayer : MonoBehaviour
             rigidbody.MovePosition(transform.position + direction * currentSpeed * Time.deltaTime);
         }
 
-        // Rotación alrededor del eje vertical
+        // Rotaciï¿½n alrededor del eje vertical
         if (Input.GetKey(KeyCode.A))
         {
             this.transform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);

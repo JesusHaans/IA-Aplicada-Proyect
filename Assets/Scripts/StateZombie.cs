@@ -17,7 +17,7 @@ public class StateZombie : MonoBehaviour
     public float radio;
     public Transform playerPosition;
     public float normalSpeed = 1.0f;  // Velocidad normal de movimiento
-    public float smoothTime = 0.5f; // Tiempo de suavizado
+    public float smoothTime = 0.1f; // Tiempo de suavizado
     private Vector3 currentVelocity = Vector3.zero; // Velocidad actual de suavizado
 
 
@@ -106,7 +106,8 @@ public class StateZombie : MonoBehaviour
         float predictionTime = toPlayer.magnitude / normalSpeed;
         Vector3 futurePlayerPosition = playerPosition.position + playerPosition.GetComponent<Rigidbody>().velocity * predictionTime;
         Vector3 desiredDirection = (futurePlayerPosition - this.transform.position).normalized;
-        Vector3 steeringForce = normalSpeed * Time.deltaTime * desiredDirection;
+        //Vector3 steeringForce = normalSpeed * Time.deltaTime * desiredDirection;
+        Vector3 steeringForce = new Vector3(0, 0, desiredDirection.z * Time.deltaTime * (normalSpeed * -1));
         Vector3 smoothedDirection = Vector3.SmoothDamp(this.transform.forward,desiredDirection,ref currentVelocity, smoothTime);
         this.transform.rotation = Quaternion.LookRotation(smoothedDirection);
         this.transform.Translate(steeringForce);
