@@ -106,11 +106,13 @@ public class StateZombie : MonoBehaviour
         float predictionTime = toPlayer.magnitude / normalSpeed;
         Vector3 futurePlayerPosition = playerPosition.position + playerPosition.GetComponent<Rigidbody>().velocity * predictionTime;
         Vector3 desiredDirection = (futurePlayerPosition - this.transform.position).normalized;
-        //Vector3 steeringForce = normalSpeed * Time.deltaTime * desiredDirection;
-        Vector3 steeringForce = new Vector3(0, 0, desiredDirection.z * Time.deltaTime * (normalSpeed * -1));
-        Vector3 smoothedDirection = Vector3.SmoothDamp(this.transform.forward,desiredDirection,ref currentVelocity, smoothTime);
+        Vector3 smoothedDirection = Vector3.SmoothDamp(this.transform.forward, desiredDirection, ref currentVelocity, smoothTime);
+        // Vector3 steeringForce = normalSpeed * Time.deltaTime * desiredDirection;
+        // Vector3 steeringForce = new Vector3(0, 0, desiredDirection.z * Time.deltaTime * (normalSpeed * -1));
         this.transform.rotation = Quaternion.LookRotation(smoothedDirection);
-        this.transform.Translate(steeringForce);
+        this.transform.Translate(0, 0, normalSpeed * Time.deltaTime);
+
+        // this.transform.Translate(steeringForce);
         SetState(State.WANDER);
     }
     void UpdateATACAR()
