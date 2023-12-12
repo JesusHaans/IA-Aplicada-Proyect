@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class StateZombie : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class StateZombie : MonoBehaviour
     public float normalSpeed = 1.0f;  // Velocidad normal de movimiento
     public float smoothTime = 0.1f; // Tiempo de suavizado
     private Vector3 currentVelocity = Vector3.zero; // Velocidad actual de suavizado
+    public GameObject player;
+    public NavMeshAgent myNav;
 
 
     public float circleDistance = 30f; // distancia entre la partícula y el círculo
@@ -34,6 +37,7 @@ public class StateZombie : MonoBehaviour
     void Start()
     {
         SetState(State.WANDER);
+        myNav = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -102,18 +106,20 @@ public class StateZombie : MonoBehaviour
         //Logica del estado SEEK
         //this.transform.position = Vector3.MoveTowards(this.transform.position, playerPosition.position, normalSpeed*Time.deltaTime);
         //this.transform.LookAt(playerPosition);
-        Vector3 toPlayer = playerPosition.position - this.transform.position;
-        float predictionTime = toPlayer.magnitude / normalSpeed;
-        Vector3 futurePlayerPosition = playerPosition.position + playerPosition.GetComponent<Rigidbody>().velocity * predictionTime;
-        Vector3 desiredDirection = (futurePlayerPosition - this.transform.position).normalized;
-        Vector3 smoothedDirection = Vector3.SmoothDamp(this.transform.forward, desiredDirection, ref currentVelocity, smoothTime);
-        // Vector3 steeringForce = normalSpeed * Time.deltaTime * desiredDirection;
+        //Vector3 toPlayer = playerPosition.position - this.transform.position;
+        //float predictionTime = toPlayer.magnitude / normalSpeed;
+        //Vector3 futurePlayerPosition = playerPosition.position + playerPosition.GetComponent<Rigidbody>().velocity * predictionTime;
+        //Vector3 desiredDirection = (futurePlayerPosition - this.transform.position).normalized;
+        //Vector3 smoothedDirection = Vector3.SmoothDamp(this.transform.forward, desiredDirection, ref currentVelocity, smoothTime);
+        //Vector3 steeringForce = normalSpeed * Time.deltaTime * desiredDirection;
         // Vector3 steeringForce = new Vector3(0, 0, desiredDirection.z * Time.deltaTime * (normalSpeed * -1));
-        this.transform.rotation = Quaternion.LookRotation(smoothedDirection);
-        this.transform.Translate(0, 0, normalSpeed * Time.deltaTime);
-
-        // this.transform.Translate(steeringForce);
+        //this.transform.rotation = Quaternion.LookRotation(smoothedDirection);
+        //this.transform.Translate(0, 0, normalSpeed * Time.deltaTime);
+        //this.transform.Translate(steeringForce);
+        myNav.SetDestination(player.transform.position);
         SetState(State.WANDER);
+
+       
     }
     void UpdateATACAR()
     {

@@ -34,11 +34,11 @@ public class movePlayer : MonoBehaviour
         // Rotaci�n alrededor del eje vertical
         if (Input.GetKey(KeyCode.A))
         {
-            this.transform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
+            this.transform.Rotate(new Vector3(0, -rotationSpeed,0));
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            this.transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+            this.transform.Rotate(new Vector3(0, rotationSpeed, 0));
         }
     }
 }
