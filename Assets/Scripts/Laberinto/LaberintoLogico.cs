@@ -30,7 +30,7 @@ public class LaberintoLogico : GeneradorBasicoLaberinto
                 GetCelda(filas, columnas).paredDerecha = true;
             }
             //checa frente
-            if (filas + 1 > contarFilas && !GetCelda(filas+1,columnas).visitada)
+            if (filas + 1 < contarFilas && !GetCelda(filas+1,columnas).visitada)
             {
                 movimientosDisponibles[cantidadMoviminetosDisponibles] = Direccion.Frente;
                 cantidadMoviminetosDisponibles++;
@@ -39,13 +39,13 @@ public class LaberintoLogico : GeneradorBasicoLaberinto
                 GetCelda(filas, columnas).paredFrente = true;
             }
             //checa izquierda
-            if(columnas - 1 >= 0 && columnas > 0 && !GetCelda(filas,columnas - 1).visitada)
+            if(columnas > 0 && columnas - 1 >= 0 && !GetCelda(filas,columnas - 1).visitada)
             {
                 movimientosDisponibles[cantidadMoviminetosDisponibles] = Direccion.Izquierda;
                 cantidadMoviminetosDisponibles++;
             }else if(!GetCelda(filas,columnas).visitada && movimientoHecho != Direccion.Derecha)
             {
-                GetCelda(filas, columnas).visitada = true;
+                GetCelda(filas, columnas).paredIzquierda = true;
             }
             //checa atras
             if(filas > 0 && filas - 1 >=0 && !GetCelda(filas-1,columnas).visitada)

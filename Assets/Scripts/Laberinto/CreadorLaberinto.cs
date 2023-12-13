@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CreadorLaberinto : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class CreadorLaberinto : MonoBehaviour
     public bool AñadirBrechas = false;
     public GameObject Meta = null;
     private GeneradorBasicoLaberinto mLabGenerador = null;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -33,8 +35,13 @@ public class CreadorLaberinto : MonoBehaviour
                 break;
         }
         mLabGenerador.GeneraLaberinto();
-        Debug.Log(mLabGenerador);
-        for(int fila = 0; fila < Filas; fila++)
+        int mitadx = Filas / 2;
+        int mitadz = Columnas / 2;
+        int rx = Random.Range(mitadx, Filas - 1);
+        int rz = Random.Range(mitadz, Columnas - 1);
+        mLabGenerador.GetCelda(rx, rz).meta = true;
+        //Debug.Log(mLabGenerador);
+        for (int fila = 0; fila < Filas; fila++)
         {
             for(int columna = 0; columna < Columnas; columna++)
             {
@@ -71,6 +78,9 @@ public class CreadorLaberinto : MonoBehaviour
                 }
             }
         }
+        UnityEditor.AI.NavMeshBuilder.ClearAllNavMeshes();
+        UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
+
     }
 
     // Update is called once per frame

@@ -17,19 +17,11 @@ public class StateZombie : MonoBehaviour
     public Collider[] sensor;
     public float radio;
     public Transform playerPosition;
-    public float normalSpeed = 1.0f;  // Velocidad normal de movimiento
-    public float smoothTime = 0.1f; // Tiempo de suavizado
-    private Vector3 currentVelocity = Vector3.zero; // Velocidad actual de suavizado
     public GameObject player;
     public NavMeshAgent myNav;
+    public float range;
+    public Transform centerNav;
 
-
-    public float circleDistance = 30f; // distancia entre la partícula y el círculo
-    public float angleStep = 1f; // tamaño del incremento aleatorio del ángulo
-
-    private Vector3 circlePosition;
-    private float angle;
-    private Vector3 displacement;
 
 
 
@@ -73,51 +65,21 @@ public class StateZombie : MonoBehaviour
     // Funciones de actualizacion especificas para cada estado
     void UpdateWANDER()
     {
-        //Logica del estado Wander
-        Debug.Log(GetComponent<Rigidbody>().velocity.normalized);
-        // Copia la velocidad de la partícula y normalízala
-        circlePosition = GetComponent<Rigidbody>().velocity.normalized;
-
-        // Multiplica por la distancia del círculo para establecer la posición del círculo
-        circlePosition *= circleDistance;
-
-        // Incrementa el ángulo con algún valor aleatorio en cada paso
-        angle += Random.Range(0f, angleStep) - angleStep * 0.5f;
-
-        // Establece la dirección inicial
-        displacement = new Vector3(0, -1, 0);
-
-        // Multiplica por la distancia del círculo para establecer la magnitud de la dirección
-        displacement *= circleDistance;
-
-        // Rota la dirección según el ángulo de wander
-        displacement = Quaternion.Euler(0, 0, angle) * displacement;
-
-        // Calcula la posición deseada
-        Vector3 desired = circlePosition + displacement;
-
-        // Utiliza 'desired' según tus necesidades (puede ser la dirección de movimiento del NPC)
-        // Por ejemplo, podrías utilizar 'desired' para aplicar una fuerza al objeto.
-        GetComponent<Rigidbody>().AddForce(desired.normalized * normalSpeed * Time.deltaTime);
-
+        if(myNav.remainingDistance <= myNav.stoppingDistance)
+        {
+            Vector3 point;
+            if(RandomPoint(centerNav.position,range,out point))
+            {
+                myNav.SetDestination(point);
+            }
+        }
     }
     void UpdateSEEK()
     {
-        //Logica del estado SEEK
-        //this.transform.position = Vector3.MoveTowards(this.transform.position, playerPosition.position, normalSpeed*Time.deltaTime);
-        //this.transform.LookAt(playerPosition);
-        //Vector3 toPlayer = playerPosition.position - this.transform.position;
-        //float predictionTime = toPlayer.magnitude / normalSpeed;
-        //Vector3 futurePlayerPosition = playerPosition.position + playerPosition.GetComponent<Rigidbody>().velocity * predictionTime;
-        //Vector3 desiredDirection = (futurePlayerPosition - this.transform.position).normalized;
-        //Vector3 smoothedDirection = Vector3.SmoothDamp(this.transform.forward, desiredDirection, ref currentVelocity, smoothTime);
-        //Vector3 steeringForce = normalSpeed * Time.deltaTime * desiredDirection;
-        // Vector3 steeringForce = new Vector3(0, 0, desiredDirection.z * Time.deltaTime * (normalSpeed * -1));
-        //this.transform.rotation = Quaternion.LookRotation(smoothedDirection);
-        //this.transform.Translate(0, 0, normalSpeed * Time.deltaTime);
-        //this.transform.Translate(steeringForce);
+        
         myNav.SetDestination(player.transform.position);
         SetState(State.WANDER);
+
 
        
     }
@@ -131,6 +93,20 @@ public class StateZombie : MonoBehaviour
     {
         currentState = newState;
         // Aqui se pueden agregar acciones adicionales al cambio de estado.
+    }
+
+    bool RandomPoint(Vector3 center, float range, out Vector3 result)
+    {
+        Vector3 randomPoint = center + Random.insideUnitSphere * range;
+        NavMeshHit hit;
+        if(NavMesh.SamplePosition(randomPoint,out hit, 1f, NavMesh.AllAreas))
+        {
+            result = hit.position;
+            return true;
+
+        }
+        result = Vector3.zero;
+        return false;
     }
     private void OnDrawGizmos()
     {
