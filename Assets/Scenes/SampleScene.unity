@@ -995,8 +995,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vida: 100
-  normalSpeed: 150
-  runningSpeed: 300
+  normalSpeed: 260
+  runningSpeed: 500
   rotationSpeed: 1
   tiempoGolpe: 0
   tiempoSigGolpe: 0
